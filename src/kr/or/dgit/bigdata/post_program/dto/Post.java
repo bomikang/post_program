@@ -73,7 +73,7 @@ public class Post {
 	}
 
 	public String[] toArray(){
-		String addr = String.format("%s %s %s %s-%s", sido, sigungu, doro, building1, building2);
+		String addr = String.format("%s %s %s %s%s", sido, sigungu, doro, building1, building2==0?"":"-"+building2);
 		return new String[]{zipcode, addr};
 	}
 }

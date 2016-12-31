@@ -20,12 +20,14 @@ COMMENT '우편번호';
 
 select * from post;
 
-load data local infile 'D:/workspace/workspace_mybatis/post_program/DataFiles/강원도.txt' into table post
+load data local infile 'C:/workspace_java/post_program/DataFiles/강원도.txt' into table post
 character set 'euckr' fields terminated by '|' ignore 1 lines
 (@zipcode, @sido, @d, @sigungu, @d, @d, @d, @d, @doro, @d, @d, @building1, @building2, @d, @d, @d, @d, @d, @d ,@d, @d, @d, @d, @d, @d, @d)
 set zipcode = @zipcode, sido = @sido, sigungu = @sigungu, doro = @doro, building1 = @building1, building2 = @building2;
 
-load data local infile 'D:/workspace/workspace_mybatis/post_program/DataFiles/경기도.txt' into table post
+-- C:\workspace_java\post_program\DataFiles => 집
+
+load data local infile 'C:/workspace_java/post_program/DataFiles/경기도.txt' into table post
 character set 'euckr' fields terminated by '|' ignore 1 lines
 (@zipcode, @sido, @d, @sigungu, @d, @d, @d, @d, @doro, @d, @d, @building1, @building2, @d, @d, @d, @d, @d, @d ,@d, @d, @d, @d, @d, @d, @d)
 set zipcode = @zipcode, sido = @sido, sigungu = @sigungu, doro = @doro, building1 = @building1, building2 = @building2;

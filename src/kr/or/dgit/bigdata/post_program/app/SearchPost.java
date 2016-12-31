@@ -107,11 +107,10 @@ public class SearchPost extends JFrame {
 	private String[][] getRowData() {
 		List<Post> rowDatas = PostService.getInstance().searchDoro(getPost());
 		
-		String[][] arRowDatas = new String[rowDatas.size()+1][];
+		String[][] arRowDatas = new String[rowDatas.size()][];
 		for (int i = 0; i < rowDatas.size(); i++) {
 			arRowDatas[i] = rowDatas.get(i).toArray();
 		}
-		
 		return arRowDatas;
 	}
 	
