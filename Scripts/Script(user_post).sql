@@ -39,7 +39,7 @@ create index idx_post_doro on post(doro);
 
 show index from post;
 
--- type이 ALL이 아니면 인덱스를 타고 있다는 뜻.a
+-- type이 ALL이 아니면 인덱스를 타고 있다는 뜻.
 explain select * from post where sido = '강원도';
 explain select * from post where doro = '임곡로';
 
