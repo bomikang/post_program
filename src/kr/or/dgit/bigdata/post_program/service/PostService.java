@@ -98,4 +98,5 @@ public class PostService implements PostDao {
 		return new Post(zipcode, sido, sigungu, doro, building1, building2);
 	}
 
+	
 }

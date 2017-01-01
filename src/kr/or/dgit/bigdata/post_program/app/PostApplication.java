@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -21,10 +22,11 @@ import java.awt.event.MouseEvent;
 public class PostApplication extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField tfAddr;
 	private JTextField tfAddrDetail;
-	private JTextField tfZipcode;
+	public static JTextField tfAddr;
+	public static JTextField tfZipcode;
 	SearchPost searchPost = new SearchPost();
+	
 
 	/**
 	 * Launch the application.
@@ -46,6 +48,7 @@ public class PostApplication extends JFrame {
 	 * Create the frame.
 	 */
 	public PostApplication() {
+		setTitle("우편번호");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 490, 210);
 		contentPane = new JPanel();
@@ -111,6 +114,21 @@ public class PostApplication extends JFrame {
 		
 		JButton btnRegister = new JButton("등록");
 		btnRegister.setFont(new Font("굴림", Font.PLAIN, 13));
+		btnRegister.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (tfZipcode.getText().equals("") || tfZipcode.getText()==null) {
+					JOptionPane.showMessageDialog(null, "주소를 입력해주세요.");
+				}else{
+					String message = String.format("%s %s %s", tfZipcode.getText(), tfAddr.getText(), tfAddrDetail.getText());
+					JOptionPane.showMessageDialog(null, message);
+					tfZipcode.setText("");
+					tfAddr.setText("");
+					tfAddrDetail.setText("");
+				}
+			}
+		});
 		panelTf.add(btnRegister);
 	}
 

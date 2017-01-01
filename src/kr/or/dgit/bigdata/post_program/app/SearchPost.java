@@ -2,6 +2,7 @@ package kr.or.dgit.bigdata.post_program.app;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,6 +24,9 @@ import javax.swing.table.TableColumnModel;
 import kr.or.dgit.bigdata.post_program.dto.Post;
 import kr.or.dgit.bigdata.post_program.service.PostService;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 
 public class SearchPost extends JFrame {
@@ -31,26 +36,8 @@ public class SearchPost extends JFrame {
 	private JTable table;
 	private JComboBox cmbSido;
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SearchPost frame = new SearchPost();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public SearchPost() {
+		setTitle("우편번호 검색");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(500, 300, 520, 300);
 		contentPane = new JPanel();
@@ -81,7 +68,12 @@ public class SearchPost extends JFrame {
 		JButton btnSearch = new JButton("검색");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				reload();
+				if (tfDoro.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "도로명을 입력해주세요.");
+					tfDoro.requestFocus();
+				}else{
+					reload();
+				}
 			}
 		});
 		panel.add(btnSearch);
@@ -91,17 +83,34 @@ public class SearchPost extends JFrame {
 		
 		table = new JTable();
 		table.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
-		reload();
-		
 		scrollPane.setViewportView(table);
 	}
 	private void reload(){
 		DefaultTableModel model = new DefaultTableModel(getRowData(), getColName());
-		table.setModel(model);
-		tableCellAlignment(SwingConstants.CENTER, 0);
-		tableCellAlignment(SwingConstants.LEFT, 1);
-		tableSetWidth(120, 500);
+		if (getRowData() == null) {
+			JOptionPane.showMessageDialog(null, "도로명을 정확히 입력해주세요.");
+			revalidate();
+		}else{
+			table.setModel(model);
+			tableCellAlignment(SwingConstants.CENTER, 0);
+			tableCellAlignment(SwingConstants.LEFT, 1);
+			tableSetWidth(120, 500);
+			
+			table.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					int res = JOptionPane.showConfirmDialog(null, "\""+model.getValueAt(table.getSelectedRow(), 1)+"\" 이 주소가 정확합니까?");
+					
+					if (res == 0) {
+						setVisible(false);
+						PostApplication.tfZipcode.setText(model.getValueAt(table.getSelectedRow(), 0)+"");//우편번호
+						PostApplication.tfAddr.setText(model.getValueAt(table.getSelectedRow(), 1)+"");//주소
+					}
+				}
+				
+			});
+		}
 	}
 
 	private String[][] getRowData() {
@@ -111,7 +120,13 @@ public class SearchPost extends JFrame {
 		for (int i = 0; i < rowDatas.size(); i++) {
 			arRowDatas[i] = rowDatas.get(i).toArray();
 		}
-		return arRowDatas;
+		
+		if (rowDatas.isEmpty()) {
+			return null;
+		}else{
+			return arRowDatas;
+		}
+		
 	}
 	
 
@@ -141,7 +156,7 @@ public class SearchPost extends JFrame {
 
 	private Post getPost() {
 		String sido = cmbSido.getSelectedItem()+"";
-		String doro = tfDoro.getText();
+		String doro = tfDoro.getText().trim();
 		return new Post(sido, doro);
 	}
 }

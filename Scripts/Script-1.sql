@@ -45,6 +45,9 @@ show index from post;
 explain select * from post where sido = '강원도';
 explain select * from post where doro = '임곡로';
 
+select * from post where sido = '경기도';
+select * from post where doro like '임곡%';
+
 -- 시도 불러오기 쿼리
 select distinct sido from post;
 
